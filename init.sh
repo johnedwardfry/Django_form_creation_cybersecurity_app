@@ -8,4 +8,4 @@ python manage.py collectstatic --noinput
 # Create a superuser
 python manage.py createsuperuser --noinput
 # Start the server
-python manage.py runserver 0.0.0.0:800
+python manage.py runserver 0.0.0.0:8000
