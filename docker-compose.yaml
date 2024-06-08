@@ -38,13 +38,13 @@ services:
 
         test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
 
-        # how long it should wait before running and between retrys
+        # how long it should wait before running and between retries
         interval: 10s
 
-        # how long to wait untill the health check as been considered to be a failure
+        # how long to wait until the health check as been considered to be a failure
         timeout: 10s
 
-        # how many times the healthcheck should be run before declairing a failure
+        # how many times the healthcheck should be run before declaring a failure
         retries: 3
 
   # This is the service for the web application
