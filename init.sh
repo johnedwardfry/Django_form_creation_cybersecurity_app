@@ -2,10 +2,10 @@
 # This script should be run after the project has been cloned and the virtual environment has been activated.
 
 # Migrate the database
-python manage.py migrate
+python Cybersecurity_forms/manage.py migrate
 # Collect static files
-python manage.py collectstatic --noinput
+python Cybersecurity_forms/manage.py collectstatic --noinput
 # Create a superuser
-python manage.py createsuperuser --noinput
+python Cybersecurity_forms/manage.py createsuperuser --noinput
 # Start the server
-python manage.py runserver 0.0.0.0:8000
+python Cybersecurity_forms/manage.py runserver 0.0.0.0:8000
