@@ -1,0 +1,79 @@
+# this is the base of our yaml file it will create a container for each service specified note that any file that is
+# named other than docker-compose.yaml pill be preferred however you will be able to use both if you want to have
+# files for a list of separate groups of services this is useful if you have services that are closely related and want
+# to group them to make them more convenient to maintain.
+services:
+  # this will be a service for the database in this instance we will use postgres as it is the preferred database for
+  #production django instances
+
+  db:
+    # you can set a specific version here if required in this case we will use the latest version since we are
+    # demonstrating how to create services defining a specific version is useful in maintaining compatibility and
+    # security
+    # example:
+    # image: postgres:14.5
+    image: postgres:latest
+
+    # this sets the .env file which will set the environment variables for the os within this specific container be sure
+    # to put this in the gitignore file and avoid adding secrets in the prod environment by implementing a secrets vault
+    # that injects this in the .env file in this example we have a .env template you can add for local testing
+    env_file: .env
+
+    # this section is commented out because we want a stateless environment which rebuilds the database each time the
+    # application is built you can specify volumes here, but you would want to mount them in the dockerfile if you need
+    # to use cloud components like AWS cli
+    # example:
+    # - $HOST_DIR:$TARGET_DIR
+    # or
+    # /mnt/ebs:/var/lib/postgresql/data
+    #volumes:
+    #  - ./data/db:/var/lib/postgresql/data
+
+    # this is a healthcheck rather than simply checking if the process is running this will run tests to assess the
+    # service in this case it runs the pg_isready utility as the user specified in the .env file
+
+    healthcheck:
+      # Check if the database is ready
+      # use the POSTGRES_USER and POSTGRES_PASSWORD environment variables to connect
+
+        test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+
+        # how long it should wait before running and between retrys
+        interval: 10s
+
+        # how long to wait untill the health check as been considered to be a failure
+        timeout: 10s
+
+        # how many times the healthcheck should be run before declairing a failure
+        retries: 3
+
+  # This is the service for the web application
+  web:
+    # this will build any dockerfile you specify but will default to the Dockerfile created previously.
+    build: .
+    # run the init.sh script the sh -c command creates a new shell in case the os is not running one this assures that
+    # the command is executable in this case there are 2 commands separated by the && symbol indicating it will run
+    # the first command and second command in sequence. Here we are editing the permissions for and running the init.sh
+    # which is a small bash script that runs manage.py functions.
+    command: sh -c "chmod +x ./init.sh && ./init.sh"
+    # This selects the .env file to import from this will add the environment variables to the container
+    env_file: .env
+
+    # This is where you would attach a volume to a service in this case we are selecting the current directory on the
+    # host machine (the venv folder) and mounting in the container This means that we can edit the code locally and
+    # those changes will be reflected in the container making testing much easier
+    volumes:
+      - .:/code
+    # This maps the host and containers ports sometimes you will be working with many containers and allows you to
+    # use a different port if the default ones are currently in use by other containers.
+    ports:
+      - "8000:8000"
+
+    # This tells docker that the webserver will not function correctly until the postgres server is up and running
+    depends_on:
+
+      # this is pointed to the service as named above
+      db:
+
+        #this refers to the health check as defined above
+        condition: service_healthy
