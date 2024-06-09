@@ -4,7 +4,7 @@ from django.db import models
 
 # Create your models here.
 
-class RISK_MATRISK(models.Model):
+class RISK_MATRIX(models.Model):
     date_raised = models.DateField()
     RISK_NAME = models.CharField(max_length=200)
     RISK_OWNER = models.CharField(max_length=200)
@@ -30,3 +30,7 @@ class RISK_MATRISK(models.Model):
         # Calculate RISK_SEVERITY
         self.RISK_SEVERITY = self.RISK_LIKELIHOOD * self.RISK_IMPACT
         super().save(*args, **kwargs)
+
+    @property
+    def severity(self):
+        return self.RISK_LIKELIHOOD * self.RISK_IMPACT
