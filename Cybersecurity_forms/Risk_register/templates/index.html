@@ -9,6 +9,59 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            font-size: 1rem;
+            color: black;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group.full-width {
+            flex: 0 0 100%;
+        }
+        .form-group-quarter {
+            flex: 0 0 18.75%;
+            min-width: 100px;
+            margin-bottom: 15px;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -34,36 +87,72 @@
             background-color: red;
             color: white;
         }
-        .form-container {
-            margin-bottom: 20px;
+        #id_likelihood, #id_impact, #id_date_raised {
+            width: 6%; /* Adjust this value to your preference */
         }
     </style>
+
 </head>
 <body>
     <h1>Risk Register</h1>
-    <p>Enter your sub headline here</p>
+    <p>Not for official use</p>
 
     <div class="form-container">
         <form method="post">
             {% csrf_token %}
-            <div>
-                {{ form.as_p }}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_date_raised">Date Raised:</label>
+                    {{ form.date_raised }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_owner">Owner:</label>
+                    {{ form.owner }}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Owner's Email:</label>
+                {{ form.email }}
+            </div>
+        </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_likelihood">Likelihood:</label>
+                    {{ form.likelihood }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_impact">Impact:</label>
+                    {{ form.impact }}
+                </div>
+            </div>
+            <div class="form-group full-width">
+                <label for="id_description">Risk Description:</label>
+                {{ form.description }}
+            </div>
+            <div class="form-group full-width">
+                <label for="id_mitigating_action">Mitigating Action:</label>
+                {{ form.mitigating_action }}
             </div>
             <button type="submit">Add Risk</button>
         </form>
     </div>
+
 
     <table>
         <thead>
             <tr>
                 <th>Date Raised</th>
                 <th>Risk Description</th>
-                <th>Likelihood (1-3)</th>
-                <th>Impact (1-3)</th>
+                <th>Likelihood</th>
+                <th>Impact</th>
                 <th>Severity</th>
                 <th>Owner</th>
                 <th>Owner's Email</th>
                 <th>Mitigating Action</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -71,8 +160,8 @@
             <tr>
                 <td>{{ risk.date_raised }}</td>
                 <td>{{ risk.description }}</td>
-                <td>{{ risk.likelihood }}</td>
-                <td>{{ risk.impact }}</td>
+                <td>{{ risk.get_likelihood_display }}</td>
+                <td>{{ risk.get_impact_display }}</td>
                 <td class="
                     {% if risk.severity <= 2 %}
                         low
@@ -87,10 +176,17 @@
                 <td>{{ risk.owner }}</td>
                 <td>{{ risk.email }}</td>
                 <td>{{ risk.mitigating_action }}</td>
+                <td>
+                    <form method="post" action="{% url 'risk_register:delete_risk' risk.id %}">
+                    {% csrf_token %}
+                        <input type="hidden" name="risk_id" value="{{ risk.id }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="8">No risks found.</td>
+                <td colspan="9">No risks found.</td>
             </tr>
             {% endfor %}
         </tbody>

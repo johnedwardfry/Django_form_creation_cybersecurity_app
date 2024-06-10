@@ -56,6 +56,7 @@ services:
     # the first command and second command in sequence. Here we are editing the permissions for and running the init.sh
     # which is a small bash script that runs manage.py functions.
     command: sh -c "chmod +x ./init.sh && ./init.sh"
+
     # This selects the .env file to import from this will add the environment variables to the container
     env_file: .env
 

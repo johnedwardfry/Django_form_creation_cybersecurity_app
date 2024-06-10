@@ -3,7 +3,6 @@
 
 # Migrate the database
 python Cybersecurity_forms/manage.py makemigrations
-
 python Cybersecurity_forms/manage.py migrate
 # Collect static files
 python Cybersecurity_forms/manage.py collectstatic --noinput
