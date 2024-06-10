@@ -2,6 +2,8 @@
 # This script should be run after the project has been cloned and the virtual environment has been activated.
 
 # Migrate the database
+python Cybersecurity_forms/manage.py makemigrations
+
 python Cybersecurity_forms/manage.py migrate
 # Collect static files
 python Cybersecurity_forms/manage.py collectstatic --noinput

@@ -140,3 +140,4 @@ GitHub.sublime-settings
 .idea/Django_form_creation_app.iml
 /.idea
 /.idea
+sqlite3.db
