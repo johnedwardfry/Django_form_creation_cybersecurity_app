@@ -1,36 +1,17 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-
-# Create your models here.
-
-class RISK_MATRIX(models.Model):
-    date_raised = models.DateField()
-    RISK_NAME = models.CharField(max_length=200)
-    RISK_OWNER = models.CharField(max_length=200)
-    RISK_OWNER_EMAIL = models.CharField(max_length=200)
-    RISK_DESCRIPTION = models.TextField()
-    MITIGATING_ACTION = models.TextField()
-
-    RISK_LIKELIHOOD = models.IntegerField(default=1,
-                                          validators=[
-                                              MaxValueValidator(3),
-                                              MinValueValidator(1)
-                                          ])
-
-    RISK_IMPACT = models.IntegerField(default=1,
-                                      validators=[
-                                          MaxValueValidator(3),
-                                          MinValueValidator(1)
-                                      ])
-
-    RISK_SEVERITY = models.IntegerField(editable=False, )
-
-    def save(self, *args, **kwargs):
-        # Calculate RISK_SEVERITY
-        self.RISK_SEVERITY = self.RISK_LIKELIHOOD * self.RISK_IMPACT
-        super().save(*args, **kwargs)
+class Risk(models.Model):
+    date_raised = models.DateField(auto_now_add=True)
+    description = models.TextField()
+    likelihood = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3')])
+    impact = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3')])
+    owner = models.CharField(max_length=100)
+    email = models.EmailField()
+    mitigating_action = models.TextField()
 
     @property
     def severity(self):
-        return self.RISK_LIKELIHOOD * self.RISK_IMPACT
+        return self.likelihood * self.impact
+
+    def __str__(self):
+        return self.description

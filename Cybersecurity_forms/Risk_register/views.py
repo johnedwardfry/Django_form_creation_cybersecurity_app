@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the Risk Register index.")
+    return render(request, 'Risk_register/index.html')
