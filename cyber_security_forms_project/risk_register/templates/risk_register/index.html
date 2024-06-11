@@ -163,6 +163,13 @@
                 <td>{{ risk.owner }}</td>
                 <td>{{ risk.email }}</td>
                 <td>{{ risk.mitigating_action }}</td>
+                <td>
+                    <form action="{% url 'risk_register:risk_delete' risk.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+
             </tr>
             {% empty %}
             <tr>
@@ -170,6 +177,7 @@
             </tr>
             {% endfor %}
         </tbody>
+
     </table>
 </body>
 </html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- existing head content -->
+</head>
+<body>
+    <h1>Risk List</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date Raised</th>
+                <th>Risk Description</th>
+                <th>Likelihood</th>
+                <th>Impact</th>
+                <th>Severity</th>
+                <th>Owner</th>
+                <th>Owner's Email</th>
+                <th>Mitigating Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for risk in risks %}
+            <tr>
+                <td>{{ risk.date_raised }}</td>
+                <td>{{ risk.description }}</td>
+                <td>{{ risk.get_likelihood_display }}</td>
+                <td>{{ risk.get_impact_display }}</td>
+                <td class="
+                    {% if risk.severity <= 2 %}
+                        low
+                    {% elif risk.severity <= 6 %}
+                        medium
+                    {% else %}
+                        high
+                    {% endif %}
+                ">
+                    {{ risk.severity }}
+                </td>
+                <td>{{ risk.owner }}</td>
+                <td>{{ risk.email }}</td>
+                <td>{{ risk.mitigating_action }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No risks found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
