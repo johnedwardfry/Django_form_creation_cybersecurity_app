@@ -1,5 +1,5 @@
 """
-ASGI config for Cybersecurity_forms project.
+ASGI config for cyber_security_forms_project project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Cybersecurity_forms.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cyber_security_forms_project.settings')
 
 application = get_asgi_application()

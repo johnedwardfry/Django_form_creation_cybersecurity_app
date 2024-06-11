@@ -19,16 +19,18 @@
         }
         .form-group {
             flex: 1;
-            min-width: 150px;
+            min-width: 150px; /* Minimum width for smaller screens */
             margin-bottom: 15px;
+        }
+        .form-group-eighth {
+            flex: 0 0 12.5%; /* One eighth width */
+            min-width: 100px; /* Ensure it doesn't get too small */
         }
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            font-family: Arial, sans-serif;
-            font-size: 1rem;
-            color: black;
+            font-size: 1rem; /* Match other fields */
         }
         .form-group input[type="text"],
         .form-group input[type="email"],
@@ -44,11 +46,6 @@
         }
         .form-group.full-width {
             flex: 0 0 100%;
-        }
-        .form-group-quarter {
-            flex: 0 0 18.75%;
-            min-width: 100px;
-            margin-bottom: 15px;
         }
         button[type="submit"] {
             background-color: #4CAF50;
@@ -87,15 +84,11 @@
             background-color: red;
             color: white;
         }
-        #id_likelihood, #id_impact, #id_date_raised {
-            width: 6%; /* Adjust this value to your preference */
-        }
     </style>
-
 </head>
 <body>
     <h1>Risk Register</h1>
-    <p>Not for official use</p>
+    <p>Enter your sub headline here</p>
 
     <div class="form-container">
         <form method="post">
@@ -105,25 +98,21 @@
                     <label for="id_date_raised">Date Raised:</label>
                     {{ form.date_raised }}
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group">
                     <label for="id_owner">Owner:</label>
                     {{ form.owner }}
-            </div>
-            <div class="form-group">
-                <label for="id_email">Owner's Email:</label>
-                {{ form.email }}
-            </div>
-        </div>
-            <div class="form-row">
+                </div>
                 <div class="form-group">
-                    <label for="id_likelihood">Likelihood:</label>
-                    {{ form.likelihood }}
+                    <label for="id_email">Owner's Email:</label>
+                    {{ form.email }}
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group-eighth">
+                    <label for="id_likelihood">Likelihood:</label>
+                    {{ form.likelihood }}
+                </div>
+                <div class="form-group-eighth">
                     <label for="id_impact">Impact:</label>
                     {{ form.impact }}
                 </div>
@@ -140,7 +129,6 @@
         </form>
     </div>
 
-
     <table>
         <thead>
             <tr>
@@ -152,7 +140,6 @@
                 <th>Owner</th>
                 <th>Owner's Email</th>
                 <th>Mitigating Action</th>
-                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -176,17 +163,10 @@
                 <td>{{ risk.owner }}</td>
                 <td>{{ risk.email }}</td>
                 <td>{{ risk.mitigating_action }}</td>
-                <td>
-                    <form method="post" action="{% url 'risk_register:delete_risk' risk.id %}">
-                    {% csrf_token %}
-                        <input type="hidden" name="risk_id" value="{{ risk.id }}">
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="9">No risks found.</td>
+                <td colspan="8">No risks found.</td>
             </tr>
             {% endfor %}
         </tbody>
