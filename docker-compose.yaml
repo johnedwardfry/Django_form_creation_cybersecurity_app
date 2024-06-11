@@ -68,7 +68,7 @@ services:
     # This maps the host and containers ports sometimes you will be working with many containers and allows you to
     # use a different port if the default ones are currently in use by other containers.
     ports:
-      - "8000:8000"
+      - "8001:8001"
 
     # This tells docker that the webserver will not function correctly until the postgres server is up and running
     depends_on:
