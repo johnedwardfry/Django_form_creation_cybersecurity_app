@@ -5,3 +5,5 @@ for initial setup in python Due to the removal of the long-deprecated pkgutil.Im
 
 "python -m ensurepip --upgrade"
 "python -m pip install --upgrade setuptools"
+this is the address for the risk register app I will be adding a fron page for redirection to all apps
+http://localhost:8001/risk_register/

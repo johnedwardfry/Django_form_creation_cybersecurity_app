@@ -11,7 +11,7 @@ class RiskForm(forms.ModelForm):
             'likelihood': forms.Select(choices=Risk.LIKELIHOOD_CHOICES),
             'impact': forms.Select(choices=Risk.IMPACT_CHOICES),
             'owner': forms.TextInput(attrs={'size': 30}),
-            'email': forms.EmailInput(attrs={'placeholder': 'owner@example.com', 'size': 30}),
-            'mitigating_action': forms.Textarea(attrs={'rows': 4, 'cols': 50}),
+            'email': forms.EmailInput(attrs={'placeholder': 'owner@example.com', 'size': 10}),
+            'mitigating_action': forms.Textarea(attrs={'rows': 6, 'cols': 50}),
         }
 
